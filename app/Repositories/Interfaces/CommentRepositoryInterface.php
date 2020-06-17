@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface CommentRepositoryInterface
+interface CommentRepositoryInterface extends BaseRepositoryInterface
 {
-    public function Add(array $data);
+
 }

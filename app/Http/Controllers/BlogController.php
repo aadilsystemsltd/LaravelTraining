@@ -5,23 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Repositories\Interfaces\BlogRepositoryInterface;
-use App\Repositories\Interfaces\CommentRepositoryInterface;
+
+use App\Services\Interfaces\CommentServicesInterface;
+use App\Services\Interfaces\BlogServicesInterface;
 
 class BlogController extends Controller
 {
 
-    private $blogRepository;
-    private $commentRepository;
-    public function __construct(BlogRepositoryInterface $blogRepository, CommentRepositoryInterface $commentRepository)
+    private $blogService;
+    private $commentService;
+    public function __construct(BlogServicesInterface $blogService, CommentServicesInterface $commentService)
     {
-        $this->blogRepository = $blogRepository;
-        $this->commentRepository = $commentRepository;
+        $this->blogService = $blogService;
+        $this->commentService = $commentService;
     }
 
     public function getBlogsList()
     {
-        $blogs = $this->blogRepository->Get();
+        $blogs = $this->blogService->Get();
         return view('ListBlogs', ['blogs' => $blogs]);
     }
 
@@ -42,8 +43,7 @@ class BlogController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->image;
-            $imageName = $image->getClientOriginalName();
-            $image->storeAs('uploads', $imageName, 'public');
+            $imageName = $this->blogService->UploadImageAndRetrunImageName($image);
         }
 
         $data = [
@@ -53,20 +53,20 @@ class BlogController extends Controller
             'author' => $request->author,
         ];
 
-        $this->blogRepository->Save($data);
+        $this->blogService->Create($data);
 
         return redirect('/home');
     }
 
     public function deleteBlog($id)
     {
-        $this->blogRepository->Delete($id);
+        $this->blogService->Delete($id);
         return redirect('/home');
     }
 
     public function getEditBlog($id)
     {
-        $blog = $this->blogRepository->Find($id);
+        $blog = $this->blogService->Find($id);
         return view('editBlog', ['blog' => $blog]);
     }
 
@@ -79,8 +79,7 @@ class BlogController extends Controller
             'comment' => $request->comments,
         ];
 
-        $this->commentRepository->Add($input);
-        // redirect()->back();
+        $this->commentService->Create($input);
         return redirect('/home');
     }
 
@@ -98,10 +97,12 @@ class BlogController extends Controller
                 ->withErrors($validator);
         }
 
-        if ($request->hasFile('editImage')) {
+        if ($request->hasFile('editImage'))
+        {
             $image = $request->editImage;
-            $imageName = $image->getClientOriginalName();
-            $image->storeAs('uploads', $imageName, 'public');
+
+            $imageName = $this->blogService->UploadImageAndRetrunImageName($image);
+
             $data = [
                 'title' => $request->title,
                 'description' => $request->description,
@@ -109,15 +110,17 @@ class BlogController extends Controller
                 'author' => $request->author
             ];
 
-            $this->blogRepository->Update($request->id, $data);
-        } else {
+            $this->blogService->Update($request->id, $data);
+        }
+        else
+        {
             $data = [
                 'title' => $request->title,
                 'description' => $request->description,
                 'author' => $request->author
             ];
 
-            $this->blogRepository->Update($request->id, $data);
+            $this->blogService->Update($request->id, $data);
         }
 
         return redirect('/home');

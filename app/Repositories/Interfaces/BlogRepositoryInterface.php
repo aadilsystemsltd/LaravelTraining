@@ -2,11 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface BlogRepositoryInterface
+interface BlogRepositoryInterface extends BaseRepositoryInterface
 {
-    function Get();
-    function Save(array $data);
-    function Delete($id);
-    function Find($id);
-    function Update(int $id, array $data);
+
 }

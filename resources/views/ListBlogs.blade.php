@@ -21,8 +21,10 @@
                     <a href="{{ url('editBlog/'.$i->id) }}"><h2 class="card-title">{{ $i->title }}</h2></a>
                     <input type="hidden" name="id" value="{{ $i->id }}">
                     <p class="card-text">{{ $i->description }}</p>
-                    <textarea name="comments" class="form-control" rows="5" placeholder="Comments"></textarea>
-                    <button type="submit" class="btn btn-primary" style="margin-top: 7px;">Add</button>
+                    @if (Auth::check())
+                        <textarea name="comments" class="form-control" rows="5" placeholder="Comments"></textarea>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 7px;">Add</button>
+                    @endif
                 </div>
             </form>
 

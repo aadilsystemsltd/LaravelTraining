@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Repositories\Interfaces\HomeRepositoryInterface;
 use App\User;
 
-class HomeRepository implements HomeRepositoryInterface
+class HomeRepository extends BaseRepository implements HomeRepositoryInterface
 {
     public function updateProfile(int $id, array $data)
     {

@@ -175,9 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
-        App\Providers\RepositoryServiceProvider\BlogRepositoryServiceProvider::class,
-        App\Providers\RepositoryServiceProvider\HomeRepositoryServiceProvider::class,
-        App\Providers\RepositoryServiceProvider\CommentRepositoryServiceProvider::class,
+        App\Providers\ServiceProvider\BlogServiceProvider::class,
+        App\Providers\ServiceProvider\HomeServiceProvider::class,
+        App\Providers\ServiceProvider\CommentServiceProvider::class,
     ],
 
     /*

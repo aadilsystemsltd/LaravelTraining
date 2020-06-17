@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Providers\RepositoryServiceProvider;
+namespace App\Providers\ServiceProvider;
 
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\HomeRepository;
 use App\Repositories\Interfaces\HomeRepositoryInterface;
 
-class HomeRepositoryServiceProvider extends ServiceProvider
+class HomeServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
